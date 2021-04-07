@@ -3,183 +3,168 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> statement
-Rule 1     statement -> expression
-Rule 2     statement -> factor
-Rule 3     statement -> NAME EQUALS expression
-Rule 4     expression -> expression PLUS term
-Rule 5     expression -> term
-Rule 6     term -> NAME
-Rule 7     term -> NUMBER
-Rule 8     factor -> LPAREN expression RPAREN
+Rule 1     statement -> NAME EQUALS expression
+Rule 2     expression -> term
+Rule 3     expression -> expression PLUS expression
+Rule 4     expression -> LPAREN expression RPAREN
+Rule 5     term -> NAME
+Rule 6     term -> NUMBER
 
 Terminals, with rules where they appear
 
-EQUALS               : 3
-LPAREN               : 8
-NAME                 : 3 6
-NUMBER               : 7
-PLUS                 : 4
-RPAREN               : 8
+EQUALS               : 1
+LPAREN               : 4
+NAME                 : 1 5
+NUMBER               : 6
+PLUS                 : 3
+RPAREN               : 4
 error                : 
 
 Nonterminals, with rules where they appear
 
-expression           : 1 3 4 8
-factor               : 2
+expression           : 1 3 3 4
 statement            : 0
-term                 : 4 5
+term                 : 2
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . statement
-    (1) statement -> . expression
-    (2) statement -> . factor
-    (3) statement -> . NAME EQUALS expression
-    (4) expression -> . expression PLUS term
-    (5) expression -> . term
-    (8) factor -> . LPAREN expression RPAREN
-    (6) term -> . NAME
-    (7) term -> . NUMBER
+    (1) statement -> . NAME EQUALS expression
 
-    NAME            shift and go to state 2
-    LPAREN          shift and go to state 6
-    NUMBER          shift and go to state 3
+    NAME            shift and go to state 1
 
-    term                           shift and go to state 1
-    expression                     shift and go to state 7
-    statement                      shift and go to state 4
-    factor                         shift and go to state 5
+    statement                      shift and go to state 2
 
 state 1
 
-    (5) expression -> term .
+    (1) statement -> NAME . EQUALS expression
 
-    RPAREN          reduce using rule 5 (expression -> term .)
-    PLUS            reduce using rule 5 (expression -> term .)
-    $end            reduce using rule 5 (expression -> term .)
+    EQUALS          shift and go to state 3
 
 
 state 2
-
-    (3) statement -> NAME . EQUALS expression
-    (6) term -> NAME .
-
-    EQUALS          shift and go to state 8
-    PLUS            reduce using rule 6 (term -> NAME .)
-    $end            reduce using rule 6 (term -> NAME .)
-
-
-state 3
-
-    (7) term -> NUMBER .
-
-    PLUS            reduce using rule 7 (term -> NUMBER .)
-    $end            reduce using rule 7 (term -> NUMBER .)
-    RPAREN          reduce using rule 7 (term -> NUMBER .)
-
-
-state 4
 
     (0) S' -> statement .
 
 
 
+state 3
+
+    (1) statement -> NAME EQUALS . expression
+    (2) expression -> . term
+    (3) expression -> . expression PLUS expression
+    (4) expression -> . LPAREN expression RPAREN
+    (5) term -> . NAME
+    (6) term -> . NUMBER
+
+    LPAREN          shift and go to state 7
+    NAME            shift and go to state 5
+    NUMBER          shift and go to state 6
+
+    term                           shift and go to state 4
+    expression                     shift and go to state 8
+
+state 4
+
+    (2) expression -> term .
+
+    PLUS            reduce using rule 2 (expression -> term .)
+    $end            reduce using rule 2 (expression -> term .)
+    RPAREN          reduce using rule 2 (expression -> term .)
+
+
 state 5
 
-    (2) statement -> factor .
+    (5) term -> NAME .
 
-    $end            reduce using rule 2 (statement -> factor .)
+    PLUS            reduce using rule 5 (term -> NAME .)
+    $end            reduce using rule 5 (term -> NAME .)
+    RPAREN          reduce using rule 5 (term -> NAME .)
 
 
 state 6
 
-    (8) factor -> LPAREN . expression RPAREN
-    (4) expression -> . expression PLUS term
-    (5) expression -> . term
-    (6) term -> . NAME
-    (7) term -> . NUMBER
+    (6) term -> NUMBER .
 
-    NAME            shift and go to state 9
-    NUMBER          shift and go to state 3
+    PLUS            reduce using rule 6 (term -> NUMBER .)
+    $end            reduce using rule 6 (term -> NUMBER .)
+    RPAREN          reduce using rule 6 (term -> NUMBER .)
 
-    term                           shift and go to state 1
-    expression                     shift and go to state 10
 
 state 7
 
-    (1) statement -> expression .
-    (4) expression -> expression . PLUS term
+    (4) expression -> LPAREN . expression RPAREN
+    (2) expression -> . term
+    (3) expression -> . expression PLUS expression
+    (4) expression -> . LPAREN expression RPAREN
+    (5) term -> . NAME
+    (6) term -> . NUMBER
 
-    $end            reduce using rule 1 (statement -> expression .)
-    PLUS            shift and go to state 11
+    LPAREN          shift and go to state 7
+    NAME            shift and go to state 5
+    NUMBER          shift and go to state 6
 
+    term                           shift and go to state 4
+    expression                     shift and go to state 9
 
 state 8
 
-    (3) statement -> NAME EQUALS . expression
-    (4) expression -> . expression PLUS term
-    (5) expression -> . term
-    (6) term -> . NAME
-    (7) term -> . NUMBER
+    (1) statement -> NAME EQUALS expression .
+    (3) expression -> expression . PLUS expression
 
-    NAME            shift and go to state 9
-    NUMBER          shift and go to state 3
+    $end            reduce using rule 1 (statement -> NAME EQUALS expression .)
+    PLUS            shift and go to state 10
 
-    term                           shift and go to state 1
-    expression                     shift and go to state 12
 
 state 9
 
-    (6) term -> NAME .
+    (4) expression -> LPAREN expression . RPAREN
+    (3) expression -> expression . PLUS expression
 
-    PLUS            reduce using rule 6 (term -> NAME .)
-    $end            reduce using rule 6 (term -> NAME .)
-    RPAREN          reduce using rule 6 (term -> NAME .)
+    RPAREN          shift and go to state 11
+    PLUS            shift and go to state 10
 
 
 state 10
 
-    (8) factor -> LPAREN expression . RPAREN
-    (4) expression -> expression . PLUS term
+    (3) expression -> expression PLUS . expression
+    (2) expression -> . term
+    (3) expression -> . expression PLUS expression
+    (4) expression -> . LPAREN expression RPAREN
+    (5) term -> . NAME
+    (6) term -> . NUMBER
 
-    RPAREN          shift and go to state 13
-    PLUS            shift and go to state 11
+    LPAREN          shift and go to state 7
+    NAME            shift and go to state 5
+    NUMBER          shift and go to state 6
 
+    term                           shift and go to state 4
+    expression                     shift and go to state 12
 
 state 11
 
-    (4) expression -> expression PLUS . term
-    (6) term -> . NAME
-    (7) term -> . NUMBER
+    (4) expression -> LPAREN expression RPAREN .
 
-    NAME            shift and go to state 9
-    NUMBER          shift and go to state 3
+    PLUS            reduce using rule 4 (expression -> LPAREN expression RPAREN .)
+    $end            reduce using rule 4 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 4 (expression -> LPAREN expression RPAREN .)
 
-    term                           shift and go to state 14
 
 state 12
 
-    (3) statement -> NAME EQUALS expression .
-    (4) expression -> expression . PLUS term
+    (3) expression -> expression PLUS expression .
+    (3) expression -> expression . PLUS expression
 
-    $end            reduce using rule 3 (statement -> NAME EQUALS expression .)
-    PLUS            shift and go to state 11
+  ! shift/reduce conflict for PLUS resolved as shift
+    $end            reduce using rule 3 (expression -> expression PLUS expression .)
+    RPAREN          reduce using rule 3 (expression -> expression PLUS expression .)
+    PLUS            shift and go to state 10
 
+  ! PLUS            [ reduce using rule 3 (expression -> expression PLUS expression .) ]
 
-state 13
-
-    (8) factor -> LPAREN expression RPAREN .
-
-    $end            reduce using rule 8 (factor -> LPAREN expression RPAREN .)
-
-
-state 14
-
-    (4) expression -> expression PLUS term .
-
-    RPAREN          reduce using rule 4 (expression -> expression PLUS term .)
-    PLUS            reduce using rule 4 (expression -> expression PLUS term .)
-    $end            reduce using rule 4 (expression -> expression PLUS term .)
-
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PLUS in state 12 resolved as shift

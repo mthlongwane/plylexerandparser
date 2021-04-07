@@ -44,7 +44,9 @@ t_ignore  = ' \t'
 
 # Error handling rule
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    #print("Illegal character '%s'" % t.value[0])
+    print("Error in input")
+    exit(0)
     t.lexer.skip(1)
 
 # Build the lexer
@@ -56,53 +58,60 @@ while True:
         break
     file_data += input_
 
-mylexer.input(file_data)
+#mylexer.input(file_data)
 
 # Step 2: Parser.
 # dictionary of names
 names = {}
 
-def p_statement_expression(p):
-    '''statement : expression
-                 | factor '''
-    p[0] = p[1]
+#def p_statement_expression(p):
+#    '''statement : assignment '''
+#    p[0] = p[1]
     
 def p_statement_assign(p):
-    '''statement   : NAME EQUALS expression'''
-    p[1] = p[3]
+    '''statement : NAME EQUALS expression'''
+    names[p[1]] = p[3]
 
-def p_expression_plus(p) :  
-    'expression : expression PLUS term'
-    p[0] = p[1] + p[3]
-    
 def p_expression_term(p):
-    'expression : term'
+    'expression : term' 
     p[0] = p[1]
+    
+def p_expression_plus(p) :  
+    'expression : expression PLUS expression'
+    p[0] = p[1] + p[3]
+
+def p_expression_group(p):
+    'expression : LPAREN expression RPAREN'
+    p[0] = p[2]
 
 def p_expression_name(p):
     'term : NAME'
-    p[0] = p[1]
+    if p[1] not in names:
+        print("Error in input")
+        exit(0)
+    else:
+        p[0] =  names[p[1]]
 
 def p_term_num(p):
     'term : NUMBER'
     p[0] = p[1]
 
-def p_factor_expr(p):
-    'factor : LPAREN expression RPAREN'
-    p[0] = p[2]
-
 # Error rule for syntax errors
+#acceptanceFlag = false
 def p_error(p):
-        if p: 
+        if p or p is None : 
             print("Error in input")
-            print(p)
-            exit(1)
+            exit(0)
         if not p:
-            print(p)
+            return
+        
 
 
-# Build the parser
-parser = yacc.yacc()
-abstract_syntax_tree = yacc.parse(lexer = mylexer)
+# Build the parsser
 
-print (abstract_syntax_tree)
+parser = yacc.yacc(debug=False, write_tables=False)
+
+for i in file_data[:-1].split('\n'): 
+    yacc.parse(i, lexer= mylexer)
+
+print ("Accepted")
